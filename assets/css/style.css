@@ -1,0 +1,53 @@
+@font-face {
+    font-family: "zicons";
+    src: url(../fonts/HylianSymbols.woff) format("woff");
+}
+
+@font-face {
+    font-family: "tprincess";
+    src: url(../fonts/Ravenna.woff) format("woff");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "zelda";
+    src: url(../fonts/HyliaSerifBeta-Regular.woff) format("woff");
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    background: url(../images/background.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: "tprincess";
+    letter-spacing: 1px;
+
+}
+
+.container {
+    height: 95%;
+    background: url(../images/scroll.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 5% 5%;
+
+}
+
+#question {
+    font-family: "zelda";
+    letter-spacing: normal;
+}
+
+#icon {
+    font-family: "zicons";
+    font-size: 3rem;
+}
+
+.answer {
+    font-family: "tprincess";
+    letter-spacing: 1px;
+    font-size: 2rem;
+}
