@@ -1,4 +1,35 @@
-var game = {
+let fairy = $("#fairy");
+let fairypos = {
+    x:0,
+    y:0,
+};
+
+let mousepos = {
+    x:0,
+    y:0,
+}
+
+let mouseMove = function(e) {
+    mousepos.x = e.pageX;
+    mousepos.y = e.pageY;
+}
+
+let followMouse = function(){
+    let distX = mousepos.x - fairypos.x;
+    let distY = mousepos.y - fairypos.y;
+
+    fairypos.x += distX/5 + 5;
+    fairypos.y += distY/2 + 5;
+
+    fairy.css(
+        {"left": `${fairypos.x}px`,
+        "top": `${fairypos.y}px`}
+    );
+}
+
+setInterval(followMouse, 50);
+
+let game = {
     activeQuestion: {},
     currentQuestion: 0,
     wrongAnswer: 0,
@@ -116,10 +147,10 @@ var game = {
             let randomIndex = Math.floor(Math.random() * setOrder.length);
             randomOrder.push(setOrder.splice(randomIndex, 1));
         }
-        $("#answerCol").html(`<h4 id='icon'>h <span class='answer'>${randomOrder[0]}</span></h4>`);
-        $("#answerCol").append(`<h4 id='icon'>i <span class='answer'>${randomOrder[1]}</span></h4>`);
-        $("#answerCol").append(`<h4 id='icon'>j <span class='answer'>${randomOrder[2]}</span></h4>`);
-        $("#answerCol").append(`<h4 id='icon'>f <span class='answer'>${randomOrder[3]}</span></h4>`);
+        $("#answerCol").html(`<h4 id='icon'>h <span class='answer hvr-grow-shadow'>${randomOrder[0]}</span></h4>`);
+        $("#answerCol").append(`<h4 id='icon'>i <span class='answer hvr-grow-shadow'>${randomOrder[1]}</span></h4>`);
+        $("#answerCol").append(`<h4 id='icon'>j <span class='answer hvr-grow-shadow'>${randomOrder[2]}</span></h4>`);
+        $("#answerCol").append(`<h4 id='icon'>f <span class='answer hvr-grow-shadow'>${randomOrder[3]}</span></h4>`);
 
     },
 
@@ -140,7 +171,8 @@ var game = {
         } else {
             console.log(`Wrong!`);
             game.wrongAnswer++;
-            $("#gifColumn").html(`<img src='assets/images/incorrect.gif'>`);
+            $("#gifColumn").html(`<h2>Correct answer: ${q.correctAnswer}`);
+            $("#gifColumn").append(`<img src='assets/images/incorrect.gif'>`);
             game.currentQuestion++
             setTimeout(function () {
                 game.loadQuestion();
@@ -179,6 +211,6 @@ $("#answerCol").on("click", ".answer", function () {
 
 $("#gifColumn").on("click","#restart", function() {
     game.resetGame();
-})
+});
 
-
+$(document).on("mousemove", mouseMove);
