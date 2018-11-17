@@ -36,7 +36,8 @@ body, html {
 
 }
 
-#question {
+#question,
+#startScreen {
     font-family: "zelda";
     letter-spacing: normal;
 }
@@ -49,7 +50,11 @@ body, html {
 .answer {
     font-family: "tprincess";
     letter-spacing: 1px;
-    font-size: 2rem;
+    font-size: 1.5rem;
+}
+
+.answer:hover {
+    cursor: pointer;
 }
 
 /* Grow Shadow */
@@ -78,4 +83,14 @@ body, html {
 
 #fairy{
     position: absolute;
+}
+
+#time-col {
+    display: inline;
+}
+
+.hourglass {
+    width: 50px;
+    height: auto;
+    display: inline-block;
 }

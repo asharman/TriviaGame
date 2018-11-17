@@ -1,33 +1,34 @@
 let fairy = $("#fairy");
 let fairypos = {
-    x:0,
-    y:0,
+    x: 0,
+    y: 0,
 };
 
 let mousepos = {
-    x:0,
-    y:0,
+    x: 0,
+    y: 0,
 }
 
-let mouseMove = function(e) {
+let mouseMove = function (e) {
     mousepos.x = e.pageX;
     mousepos.y = e.pageY;
 }
 
-let followMouse = function(){
+let followMouse = function () {
     let distX = mousepos.x - fairypos.x;
     let distY = mousepos.y - fairypos.y;
 
-    fairypos.x += distX/5 + 5;
-    fairypos.y += distY/2 + 5;
+    fairypos.x += distX / 5 + 5;
+    fairypos.y += distY / 2 + 5;
 
     fairy.css(
-        {"left": `${fairypos.x}px`,
-        "top": `${fairypos.y}px`}
+        {
+            "left": `${fairypos.x}px`,
+            "top": `${fairypos.y}px`
+        }
     );
 }
 
-setInterval(followMouse, 50);
 
 let game = {
     activeQuestion: {},
@@ -38,8 +39,8 @@ let game = {
     timer: 15,
     timeout: "",
     clock: "",
-    clicked : false,
-
+    clicked: false,
+        
     questions: [
         {
             questionNumber: 0,
@@ -101,9 +102,9 @@ let game = {
             answers: ["The Adventure of Link", "Breath of the Wild", "Four Swords", "Tri-Force Heroes"],
             correctAnswer: "The Adventure of Link",
         },
-
+        
     ],
-
+    
     resetGame: function () {
         this.currentQuestion = 0;
         this.answerGuessed = "";
@@ -111,16 +112,16 @@ let game = {
         this.wrongAnswer = 0;
         game.loadQuestion();
     },
-
+    
     loadQuestion: function () {
         for (i in this.questions) {
             if (this.currentQuestion === 10) {
                 $("#questionCol").empty()
                 $("#answerCol").empty()
                 $("#time-col").empty()
-                $("#gifColumn").empty()
+                $("#gif-column").empty()
                 game.gameOverDisplay();
-
+                
             } else if (this.questions[i].questionNumber === this.currentQuestion) {
                 game.timerCount();
                 game.displayQuestion(game.questions[i]);
@@ -130,17 +131,17 @@ let game = {
             }
         }
     },
-
+    
     displayQuestion: function (q) {
         activeQuestion = q;
         $("#questionCol").html(`<h1 id='question' class="display-4">Question ${q.questionNumber + 1}</h1>`);
         $("#questionCol").append(`<h2>${q.question}</h2>`);
-        $("#time-col").html(`<h2>Seconds remaining: ${game.timer}</h2>`);
-        $("#gifColumn").empty();
+        $("#time-col").html(`<img src='assets/images/Phantom_Hourglass.png' class='hourglass'><span>${game.timer}</span>`);
+        $("#gif-column").empty();
         game.clicked = false;
         let randomOrder = [];
         let setOrder = [];
-        for (i in q.answers) {setOrder.push(q.answers[i])}
+        for (i in q.answers) { setOrder.push(q.answers[i]) }
         console.log(`${setOrder}`);
         
         for (i = 0; i < 4; i++) {
@@ -151,19 +152,20 @@ let game = {
         $("#answerCol").append(`<h4 id='icon'>i <span class='answer hvr-grow-shadow'>${randomOrder[1]}</span></h4>`);
         $("#answerCol").append(`<h4 id='icon'>j <span class='answer hvr-grow-shadow'>${randomOrder[2]}</span></h4>`);
         $("#answerCol").append(`<h4 id='icon'>f <span class='answer hvr-grow-shadow'>${randomOrder[3]}</span></h4>`);
-
+        
     },
-
+    
     checkAnswer: function (a, q) {
+        let randomGif = Math.floor(Math.random()*5+1);
         clearTimeout(game.timeout);
         clearInterval(game.clock);
         console.log(`${a}`);
         console.log(`${q.correctAnswer}`);
-
+        
         if (a === q.correctAnswer) {
             console.log(`Correct!`);
             game.rightAnswer++;
-            $("#gifColumn").html(`<img src='assets/images/correct.gif'>`);
+            $("#gif-column").html(`<img src='assets/images/correct${randomGif}.gif' style='width: 250px; height: auto'>`);
             game.currentQuestion++
             setTimeout(function () {
                 game.loadQuestion();
@@ -171,33 +173,35 @@ let game = {
         } else {
             console.log(`Wrong!`);
             game.wrongAnswer++;
-            $("#gifColumn").html(`<h2>Correct answer: ${q.correctAnswer}`);
-            $("#gifColumn").append(`<img src='assets/images/incorrect.gif'>`);
+            $("#gif-column").html(`<h2>Correct answer: ${q.correctAnswer}`);
+            $("#gif-column").append(`<img src='assets/images/incorrect${randomGif}.gif' style='width: 250px; height: auto'>`);
             game.currentQuestion++
             setTimeout(function () {
                 game.loadQuestion();
             }, 3000);
         }
     },
-
+    
     timerCount: function () {
         game.timer = 15;
         game.clock = setInterval(function () {
             game.timer--;
-            $("#time-col").html(`<h2>Seconds remaining: ${game.timer}</h2>`);
+            $("#time-col").html(`<img src='assets/images/Phantom_Hourglass.png' class='hourglass'><span>${game.timer}</span>`);
         }, 1000);
     },
-
-    gameOverDisplay: function() {
+    
+    gameOverDisplay: function () {
         $("#questionCol").html(`<h1 class="display-4">Game Over!</h1>`);
         $("#time-col").html(`<h4>Correct: ${game.rightAnswer} Incorrect: ${game.wrongAnswer}</h4>`);
-        $("#gifColumn").html(`<button id='restart' class='btn'>Restart</button>`);
+        $("#gif-column").html(`<button id='restart' class='btn'>Restart</button>`);
     }
-
+    
 }
 
+setInterval(followMouse, 50);
+
 //When you click the start button load question 1
-$("#questionCol").on("click","#startGame", function () {
+$("#time-col").on("click", "#startGame", function () {
     game.loadQuestion();
 });
 
@@ -209,7 +213,7 @@ $("#answerCol").on("click", ".answer", function () {
     }
 });
 
-$("#gifColumn").on("click","#restart", function() {
+$("#gif-column").on("click", "#restart", function () {
     game.resetGame();
 });
 
