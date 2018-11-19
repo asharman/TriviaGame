@@ -1,3 +1,4 @@
+/* Import fonts */
 @font-face {
     font-family: "zicons";
     src: url(../fonts/HylianSymbols.woff) format("woff");
@@ -14,6 +15,7 @@
     src: url(../fonts/HyliaSerifBeta-Regular.woff) format("woff");
 }
 
+/* Set the background image */
 body, html {
     width: 100%;
     height: 100%;
@@ -26,6 +28,7 @@ body, html {
 
 }
 
+/* Set the background image of the scroll for the game container and apply padding so the text sits inside */
 .container {
     height: 95%;
     background: url(../images/scroll.png);
@@ -36,28 +39,33 @@ body, html {
 
 }
 
+/* Set the font of the question */
 #question,
 #startScreen {
     font-family: "zelda";
     letter-spacing: normal;
 }
 
+/* Set the font of the icons in front of the answer choices */
 #icon {
     font-family: "zicons";
     font-size: 3rem;
 }
 
+/* Set the font of the answer choices */
 .answer {
     font-family: "tprincess";
     letter-spacing: 1px;
     font-size: 1.5rem;
 }
 
+/* When the user hovers the mouse ver ananswer change the pointer style */
 .answer:hover {
     cursor: pointer;
 }
 
 /* Grow Shadow */
+/* The animation that executes when the player hovers over the answers */
 .hvr-grow-shadow {
     display: inline-block;
     vertical-align: middle;
@@ -75,6 +83,7 @@ body, html {
     transform: scale(1.1);
   }
 
+/* Set the size of the fairy following the mouse */
 #fairyfast {
     width: 50px;
     height: auto;
@@ -89,6 +98,7 @@ body, html {
     display: inline;
 }
 
+/* Style the hourglass imae next to the timer */
 .hourglass {
     width: 50px;
     height: auto;

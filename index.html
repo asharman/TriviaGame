@@ -15,29 +15,35 @@
     <script defer src="assets/javascript/app.js"></script>
 </head>
 
+<!-- Main game container -->
 <body class="container d-flex flex-column">
+    <!-- Container to hold every element besides the time row -->
     <div class="container-fluid flex-grow-1">
         <div class="grid">
+            <!-- The Container that populates with the questions -->
             <div class="row" id="question-row">
                 <div id='questionCol' class="col-12 text-center">
                     <h4 id='startScreen' style="font-size: 5rem">The Legend of Zelda Trivia</h4>
                 </div>
             </div>
+            <!-- The container that holds the list of answer choices -->
             <div class="row" id="answer-row">
                 <div id='answerCol' class="col-7 offset-3">
-                    
+
                 </div>
             </div>
+            <!-- The container that holds the GIF when you get the question right or wrong -->
             <div class="row" id="gif-row">
                 <div class="col-12 text-center" id="gif-column">
-                    
+
                 </div>
             </div>
         </div>
     </div>
+    <!-- The flex container that holds the timer at the bottom of the screen -->
     <div class="container-fluid text-center" id="time-row">
         <div id='time-col' class="col-12 text-center">
-            
+
             <button id='startGame' class="btn text-center">Start Game</button>
         </div>
     </div>

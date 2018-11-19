@@ -1,4 +1,7 @@
+// Initialize a variable for to target the fairy div with Jquery
 let fairy = $("#fairy");
+
+// A set of variables used to track the fairy and the mouse's position
 let fairypos = {
     x: 0,
     y: 0,
@@ -14,6 +17,7 @@ let mouseMove = function (e) {
     mousepos.y = e.pageY;
 }
 
+// A function to update the fairy's position in relation to the mouse position
 let followMouse = function () {
     let distX = mousepos.x - fairypos.x;
     let distY = mousepos.y - fairypos.y;
@@ -29,18 +33,26 @@ let followMouse = function () {
     );
 }
 
-
+// Main game object
 let game = {
+    // Active question object used to pull information on the question that is currently loaded
     activeQuestion: {},
+    // The index of the current question
     currentQuestion: 0,
+    //The counters of how many questions were answered correctly or incorrectly
     wrongAnswer: 0,
     rightAnswer: 0,
+    // The string of the selected answer, used to compare to the current question's correct answer
     answerGuessed: "",
+    // The timer that counts down
     timer: 15,
+    //Initialized variables to reassign to the setInterval and setTimeout functions
     timeout: "",
     clock: "",
+    //A variable that is used to prevent the user from clicking an answer multiple times
     clicked: false,
         
+    // An array of the games questions
     questions: [
         {
             questionNumber: 0,
@@ -105,6 +117,7 @@ let game = {
         
     ],
     
+    // Used to reset the game's variables 
     resetGame: function () {
         this.currentQuestion = 0;
         this.answerGuessed = "";
@@ -113,8 +126,10 @@ let game = {
         game.loadQuestion();
     },
     
+    // Iterates through the array of questions and picks the question that the user is currently on
     loadQuestion: function () {
         for (i in this.questions) {
+            // If the last question has been answered clear the screen and display the game over screen
             if (this.currentQuestion === 10) {
                 $("#questionCol").empty()
                 $("#answerCol").empty()
@@ -122,9 +137,11 @@ let game = {
                 $("#gif-column").empty()
                 game.gameOverDisplay();
                 
+            // Otherwise start the timer and display the current question
             } else if (this.questions[i].questionNumber === this.currentQuestion) {
                 game.timerCount();
                 game.displayQuestion(game.questions[i]);
+                // After 15 seconds run the check answer function and use whatever answer is selected, which would be no answer
                 game.timeout = setTimeout(function () {
                     game.checkAnswer(game.answerGuessed, game.questions[game.currentQuestion])
                 }, 15000);
@@ -132,6 +149,7 @@ let game = {
         }
     },
     
+    // Display the information for the current question
     displayQuestion: function (q) {
         activeQuestion = q;
         $("#questionCol").html(`<h1 id='question' class="display-4">Question ${q.questionNumber + 1}</h1>`);
@@ -139,15 +157,19 @@ let game = {
         $("#time-col").html(`<img src='assets/images/Phantom_Hourglass.png' class='hourglass'><span>${game.timer}</span>`);
         $("#gif-column").empty();
         game.clicked = false;
+        // Initialize local variables to randomize the order in which the answers are displayed
         let randomOrder = [];
         let setOrder = [];
         for (i in q.answers) { setOrder.push(q.answers[i]) }
         console.log(`${setOrder}`);
         
+        // Iterate through the array and push a random index into the randomized array
         for (i = 0; i < 4; i++) {
             let randomIndex = Math.floor(Math.random() * setOrder.length);
             randomOrder.push(setOrder.splice(randomIndex, 1));
         }
+
+        // Display the answers to the answer row
         $("#answerCol").html(`<h4 id='icon'>h <span class='answer hvr-grow-shadow'>${randomOrder[0]}</span></h4>`);
         $("#answerCol").append(`<h4 id='icon'>i <span class='answer hvr-grow-shadow'>${randomOrder[1]}</span></h4>`);
         $("#answerCol").append(`<h4 id='icon'>j <span class='answer hvr-grow-shadow'>${randomOrder[2]}</span></h4>`);
@@ -155,26 +177,37 @@ let game = {
         
     },
     
+    // Check the selected answer for the correct answer in the current question
     checkAnswer: function (a, q) {
+        // Assign a random number from 1 to 5 to select a random GIF when you get the answer right or wrong
         let randomGif = Math.floor(Math.random()*5+1);
+
+        // Clear the setInterval and setTimout
         clearTimeout(game.timeout);
         clearInterval(game.clock);
         console.log(`${a}`);
         console.log(`${q.correctAnswer}`);
-        
+
+        // If the answer is correct add 1 to correct answer score and display a gif
         if (a === q.correctAnswer) {
             console.log(`Correct!`);
             game.rightAnswer++;
             $("#gif-column").html(`<img src='assets/images/correct${randomGif}.gif' style='width: 250px; height: auto'>`);
+
+            // Move the question index up one and load the next question in 3 seconds
             game.currentQuestion++
             setTimeout(function () {
                 game.loadQuestion();
             }, 3000);
+            
+            // If the answer is incorrect add 1 to incorrect answer score and display a gif
         } else {
             console.log(`Wrong!`);
             game.wrongAnswer++;
             $("#gif-column").html(`<h2>Correct answer: ${q.correctAnswer}`);
             $("#gif-column").append(`<img src='assets/images/incorrect${randomGif}.gif' style='width: 250px; height: auto'>`);
+
+            // Move the question index up one and load the next question in 3 seconds
             game.currentQuestion++
             setTimeout(function () {
                 game.loadQuestion();
@@ -182,6 +215,7 @@ let game = {
         }
     },
     
+    // Set the timer to 15 and count down every second and display the updated time
     timerCount: function () {
         game.timer = 15;
         game.clock = setInterval(function () {
@@ -190,6 +224,7 @@ let game = {
         }, 1000);
     },
     
+    // Display the game over screen with the amount of questions guessed correctly and incorrectly
     gameOverDisplay: function () {
         $("#questionCol").html(`<h1 class="display-4">Game Over!</h1>`);
         $("#time-col").html(`<h4>Correct: ${game.rightAnswer} Incorrect: ${game.wrongAnswer}</h4>`);
@@ -198,6 +233,7 @@ let game = {
     
 }
 
+// Update the position the fairy every 50 milliseconds
 setInterval(followMouse, 50);
 
 //When you click the start button load question 1
@@ -205,6 +241,7 @@ $("#time-col").on("click", "#startGame", function () {
     game.loadQuestion();
 });
 
+// When you click on an answer plug it into the check answer function
 $("#answerCol").on("click", ".answer", function () {
     if (game.clicked === false) {
         game.answerGuessed = $(this).text();
@@ -213,8 +250,10 @@ $("#answerCol").on("click", ".answer", function () {
     }
 });
 
+// Run the reset game function when you click on the reset button
 $("#gif-column").on("click", "#restart", function () {
     game.resetGame();
 });
 
+// Track the mouse's position for the fairy to follow
 $(document).on("mousemove", mouseMove);
